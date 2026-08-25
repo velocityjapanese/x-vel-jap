@@ -1,0 +1,23 @@
+name: Post to X
+on:
+  workflow_dispatch:
+    inputs:
+      tweet:
+        description: 'Tweet text to post'
+        required: true
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - name: Post tweet to all accounts
+        run: node post.js "${{ github.event.inputs.tweet }}"
+        env:
+          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCOUNTS_JSON: ${{ secrets.X_ACCOUNTS_JSON }}
