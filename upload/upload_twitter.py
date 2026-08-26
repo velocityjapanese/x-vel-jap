@@ -66,7 +66,7 @@ def upload_to_twitter(video_path, caption):
             consumer_secret=api_secret,
             access_token=access_token,
             access_token_secret=access_secret,
-            host=X_HOST
+            base_url=f"{X_HOST}/2"
         )
 
         # 3. Upload Video (Chunked)
