@@ -14,8 +14,10 @@ import os
 import sys
 import time
 import tweepy
+import requests
 from pathlib import Path
 from dotenv import load_dotenv
+from tweepy.auth import OAuth1UserHandler
 
 # Configure UTF-8 encoding for console output (Windows fix)
 if sys.platform == 'win32':
@@ -31,6 +33,40 @@ load_dotenv()
 
 # Current X platform host for v2 writes
 X_HOST = "https://api.x.com"
+
+# tweepy hardcodes api.twitter.com in BaseClient.request and rejects both
+# `host` and `base_url`. Patch the method so v2 writes hit the current
+# X host (api.x.com), which is required for posting.
+def _x_request(self, method, route, params=None, json=None, user_auth=False):
+    host = X_HOST
+    headers = {"User-Agent": self.user_agent}
+    auth = None
+    if user_auth:
+        auth = OAuth1UserHandler(
+            self.consumer_key, self.consumer_secret,
+            self.access_token, self.access_token_secret
+        )
+        auth = auth.apply_auth()
+    else:
+        headers["Authorization"] = f"Bearer {self.bearer_token}"
+
+    with self.session.request(
+        method, host + route, params=params, json=json,
+        headers=headers, auth=auth
+    ) as response:
+        if response.status_code == 401:
+            raise tweepy.errors.Unauthorized(response)
+        if response.status_code == 403:
+            raise tweepy.errors.Forbidden(response)
+        if response.status_code == 429:
+            raise tweepy.errors.TooManyRequests(response)
+        if response.status_code >= 500:
+            raise tweepy.errors.TwitterServerError(response)
+        if not 200 <= response.status_code < 300:
+            raise tweepy.errors.HTTPException(response)
+        return response
+
+tweepy.client.BaseClient.request = _x_request
 
 
 def upload_to_twitter(video_path, caption):
@@ -59,14 +95,13 @@ def upload_to_twitter(video_path, caption):
         auth = tweepy.OAuth1UserHandler(api_key, api_secret, access_token, access_secret)
         api_v1 = tweepy.API(auth)
 
-        # 2. Authenticate V2 (Posting) on the current X host
+        # 2. Authenticate V2 (Posting) on the current X host (api.x.com)
         print("[twitter] Authenticating with API v2 on api.x.com (posting)...")
         client = tweepy.Client(
             consumer_key=api_key,
             consumer_secret=api_secret,
             access_token=access_token,
-            access_token_secret=access_secret,
-            base_url=f"{X_HOST}/2"
+            access_token_secret=access_secret
         )
 
         # 3. Upload Video (Chunked)
