@@ -60,10 +60,6 @@ jobs:
           echo "TWITTER_API_SECRET=${{ secrets.TWITTER_API_SECRET }}" >> .env
           echo "TWITTER_ACCESS_TOKEN=${{ secrets.TWITTER_ACCESS_TOKEN }}" >> .env
           echo "TWITTER_ACCESS_SECRET=${{ secrets.TWITTER_ACCESS_SECRET }}" >> .env
-          echo "X_CLIENT_ID=${{ secrets.X_CLIENT_ID }}" >> .env
-          echo "X_CLIENT_SECRET=${{ secrets.X_CLIENT_SECRET }}" >> .env
-          echo "X_OAUTH2_ACCESS_TOKEN=${{ secrets.X_OAUTH2_ACCESS_TOKEN }}" >> .env
-          echo "X_OAUTH2_REFRESH_TOKEN=${{ secrets.X_OAUTH2_REFRESH_TOKEN }}" >> .env
           echo "TIMEZONE_OFFSET_HOURS=-5" >> .env
 
       - name: Generate Japanese Learning Reel
