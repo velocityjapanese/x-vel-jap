@@ -18864,7 +18864,42 @@
       "romaji": "Heijitsu datte, ittan tomatte, shin kokyuu shiyou",
       "category": "Time Japanese",
       "generated_at": "2026-08-25T20:31:03.375496"
+    },
+    {
+      "english": "Big brother works in Tokyo, right?",
+      "japanese": "お兄さんは、東京で働いているの？",
+      "romaji": "Oni-san wa, Tōkyō de hataraite iru no?",
+      "category": "Family Terms",
+      "generated_at": "2026-08-26T10:14:35.090504"
+    },
+    {
+      "english": "Little sister's room is messy, huh?",
+      "japanese": "妹の部屋って、散らかってるよね。",
+      "romaji": "Imōto no heya tte, chirakatteru yo ne.",
+      "category": "Family Terms",
+      "generated_at": "2026-08-26T10:14:35.090514"
+    },
+    {
+      "english": "Grandpa loves his garden, doesn't he?",
+      "japanese": "お爺さんは、庭仕事が大好きだよね。",
+      "romaji": "Ojī-san wa, niwa shigoto ga daisuki da yo ne.",
+      "category": "Family Terms",
+      "generated_at": "2026-08-26T10:14:35.090516"
+    },
+    {
+      "english": "Aunt's cakes are delicious, aren't they?",
+      "japanese": "叔母さんのケーキって、おいしいよね。",
+      "romaji": "Obā-san no kēki tte, oishii yo ne.",
+      "category": "Family Terms",
+      "generated_at": "2026-08-26T10:14:35.090517"
+    },
+    {
+      "english": "Uncle drives a big car, right?",
+      "japanese": "叔父さんって、大きな車を運転してる。",
+      "romaji": "Ojisan tte, ōkina kuruma o untenshite ru.",
+      "category": "Family Terms",
+      "generated_at": "2026-08-26T10:14:35.090518"
     }
   ],
-  "last_updated": "2026-08-25T20:31:03.375498"
+  "last_updated": "2026-08-26T10:14:35.090520"
 }
