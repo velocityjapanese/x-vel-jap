@@ -272,6 +272,18 @@ def generate_caption(phrases, category, lang_field="native", words=None, metadat
         base.extend(["Which phrase is your favorite? 👇", f"Follow for daily {lang_name} lessons!", ""])
         base.extend([f"#learn{lang_tag}", f"#{lang_tag}lessons", "#languagelearning", f"#velocity{lang_tag}", f"#daily{lang_tag}"])
         return "\n".join(base)
+    if platform == "twitter":
+        lang_name = get_language_name(phrases, lang_field)
+        lang_tag = lang_name.lower().replace(" ", "")
+        base = [f"🇯🇵 Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Today's {category} phrases:"]
+        for i, p in enumerate(phrases[:3], 1):
+            base.append(f"{i}. {p['english']} = {p.get(lang_field, '')}")
+        base.extend(["", "Follow for daily lessons! 👇"])
+        base.extend([f"#learn{lang_tag}", f"#{lang_tag}lessons", "#languagelearning", f"#velocity{lang_tag}"])
+        cap = "\n".join(base)
+        if len(cap) > 280:
+            cap = cap[:277].rstrip() + "..."
+        return cap
     base = [f"Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Category: {category}", "", f"Master {lang_name} one phrase at a time! Today's {category} lesson:", ""]
     for i, p in enumerate(phrases[:5], 1):
         base.append(f"{i}. {p['english']}")
@@ -343,7 +355,7 @@ def main():
     print("="*80)
     reel = get_latest_reel()
     if not reel: print("No reel found"); sys.exit(1)
-    caption = generate_caption(reel['phrases'], reel['category'], reel['lang_field'], reel.get('words'), reel.get('metadata'))
+    caption = generate_caption(reel['phrases'], reel['category'], reel['lang_field'], reel.get('words'), reel.get('metadata'), platform="twitter")
     upload_to_all_platforms(reel['video_path'], caption, reel['category'], reel['phrases'], reel['lang_field'], reel.get('words'), reel.get('metadata'))
 
 if __name__ == "__main__": main()

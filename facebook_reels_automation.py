@@ -594,17 +594,19 @@ def generate_all_audio(phrases: list, output_dir: str):
 
         # Generate English audio
         en_success = asyncio.run(generate_single_audio(phrase["english"], ENGLISH_VOICE, str(english_file)))
-        if en_success:
+        if en_success and Path(english_file).exists() and Path(english_file).stat().st_size > 0:
             print(f"    ✓ English: {english_file.name}")
         else:
+            print(f"    ⚠ English audio empty/failed, using silence")
             cmd = ["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "2", str(english_file)]
             subprocess.run(cmd, capture_output=True)
 
         # Generate Japanese audio
         jp_success = asyncio.run(generate_single_audio(phrase["japanese"], JAPANESE_VOICE, str(japanese_file)))
-        if jp_success:
+        if jp_success and Path(japanese_file).exists() and Path(japanese_file).stat().st_size > 0:
             print(f"    ✓ Japanese: {japanese_file.name}")
         else:
+            print(f"    ⚠ Japanese audio empty/failed, using silence")
             cmd = ["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "2", str(japanese_file)]
             subprocess.run(cmd, capture_output=True)
 
@@ -647,6 +649,11 @@ def generate_all_audio(phrases: list, output_dir: str):
             if concat_file.exists():
                 concat_file.unlink()
 
+        if not (Path(combined_file).exists() and Path(combined_file).stat().st_size > 0):
+            print(f"    ⚠ Combined audio empty, using 4s silence fallback")
+            fb = ["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "4", str(combined_file)]
+            subprocess.run(fb, capture_output=True)
+
         actual_duration = get_audio_duration(str(combined_file))
         print(f"    ✓ Combined verified: {actual_duration:.2f}s")
 
@@ -683,14 +690,25 @@ def create_final_narration(audio_files: list, output_file: str):
 
     concat_file = Path(output_file).parent / "narration_list.txt"
 
-    with open(concat_file, "w", encoding="utf-8") as f:
-        for audio_info in audio_files:
-            combined_path = Path(audio_info["combined"])
-            if combined_path.exists():
-                path_str = str(combined_path.resolve()).replace("\\", "/").replace("'", "'\\''")
-                f.write(f"file '{path_str}'\n")
+    valid = []
+    for audio_info in audio_files:
+        combined_path = Path(audio_info["combined"])
+        if combined_path.exists() and combined_path.stat().st_size > 0:
+            valid.append(combined_path)
 
-    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file), "-c:a", "copy", str(output_file)]
+    if not valid:
+        print("[audio] ⚠ No valid phrase audio found, generating silent narration fallback")
+        fallback = ["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "10", str(output_file)]
+        subprocess.run(fallback, capture_output=True, text=True)
+        ok = Path(output_file).exists() and Path(output_file).stat().st_size > 0
+        return ok
+
+    with open(concat_file, "w", encoding="utf-8") as f:
+        for combined_path in valid:
+            path_str = str(combined_path.resolve()).replace("\\", "/").replace("'", "'\\''")
+            f.write(f"file '{path_str}'\n")
+
+    cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file), "-c:a", "libmp3lame", "-q:a", "2", str(output_file)]
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     if concat_file.exists():
