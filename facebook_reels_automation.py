@@ -270,9 +270,18 @@ IMPORTANT: Create FRESH, UNIQUE phrases that haven't been used before."""
 
                 unique_phrases = []
                 for phrase in phrases:
-                    if len(phrase["english"].split()) > 15:
+                    en = (phrase.get("english") or "").strip()
+                    jp = (phrase.get("japanese") or "").strip()
+                    rom = (phrase.get("romaji") or "").strip()
+                    # Skip phrases with no real Japanese (kanji/kana) or romaji,
+                    # otherwise the rendered container would be empty.
+                    if not en or not jp or not rom:
                         continue
-                    if not is_phrase_used(phrase["english"]):
+                    if not any('\u3040' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in jp):
+                        continue
+                    if len(en.split()) > 15:
+                        continue
+                    if not is_phrase_used(en):
                         unique_phrases.append(phrase)
                     if len(unique_phrases) >= num_phrases:
                         break
