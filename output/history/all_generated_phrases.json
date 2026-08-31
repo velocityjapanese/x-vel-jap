@@ -19074,7 +19074,42 @@
       "romaji": "Yūjō, eien ni",
       "category": "Basic Phrases",
       "generated_at": "2026-08-30T14:33:37.756992"
+    },
+    {
+      "english": "Weekend comes, no alarms, just relax",
+      "japanese": "週末が来た、アラームもなし、ただリラックス",
+      "romaji": "Shuumatsu ga kita, araamu mo nashi, tada rirakkusu",
+      "category": "Time Japanese",
+      "generated_at": "2026-08-31T17:16:54.787431"
+    },
+    {
+      "english": "Mealtime, slow chew, savor the flavor",
+      "japanese": "食事中、ゆっくり噛んで、味を楽しんで",
+      "romaji": "Shokuji chuu, yukkuri kande, aji o tanoshinde",
+      "category": "Time Japanese",
+      "generated_at": "2026-08-31T17:16:54.787441"
+    },
+    {
+      "english": "Work break, stretch, reset your mind",
+      "japanese": "仕事の合間、ストレッチして、頭を切り替えよう",
+      "romaji": "Shigoto no aima, sutoretchi shite, atama o kirikaeyou",
+      "category": "Time Japanese",
+      "generated_at": "2026-08-31T17:16:54.787443"
+    },
+    {
+      "english": "Sunrise walk, no rush, just feel the air",
+      "japanese": "日の出の散歩、急がず、空気を感じながら",
+      "romaji": "Hinode no sanpo, isogazu, kuuki o kanjinagara",
+      "category": "Time Japanese",
+      "generated_at": "2026-08-31T17:16:54.787445"
+    },
+    {
+      "english": "First day back, take it easy, no pressure",
+      "japanese": "仕事復帰、焦らず、無理しないで",
+      "romaji": "Shigoto fukki, aserazu, muri shinaide",
+      "category": "Time Japanese",
+      "generated_at": "2026-08-31T17:16:54.787446"
     }
   ],
-  "last_updated": "2026-08-30T14:33:37.756994"
+  "last_updated": "2026-08-31T17:16:54.787448"
 }
