@@ -19144,7 +19144,42 @@
       "romaji": "ima kara, yūsha ni nare",
       "category": "Motivation",
       "generated_at": "2026-08-31T23:40:04.140617"
+    },
+    {
+      "english": "Where is the cash register please?",
+      "japanese": "レジはあちらですか？",
+      "romaji": "Reji wa achira desu ka?",
+      "category": "Shopping Japanese",
+      "generated_at": "2026-09-01T14:22:47.198223"
+    },
+    {
+      "english": "Do you have this in a different size?",
+      "japanese": "これ、違うサイズありますか？",
+      "romaji": "Kore, chigau saizu arimasu ka?",
+      "category": "Shopping Japanese",
+      "generated_at": "2026-09-01T14:22:47.198234"
+    },
+    {
+      "english": "I’ll take this one, please.",
+      "japanese": "これをください。",
+      "romaji": "Kore o kudasai.",
+      "category": "Shopping Japanese",
+      "generated_at": "2026-09-01T14:22:47.198236"
+    },
+    {
+      "english": "How much is this item?",
+      "japanese": "これはいくらですか？",
+      "romaji": "Kore wa ikura desu ka?",
+      "category": "Shopping Japanese",
+      "generated_at": "2026-09-01T14:22:47.198237"
+    },
+    {
+      "english": "Do you accept credit cards?",
+      "japanese": "クレジットカードは使えますか？",
+      "romaji": "Kurejitto kādo wa tsukaemasu ka?",
+      "category": "Shopping Japanese",
+      "generated_at": "2026-09-01T14:22:47.198238"
     }
   ],
-  "last_updated": "2026-08-31T23:40:04.140619"
+  "last_updated": "2026-09-01T14:22:47.198239"
 }
