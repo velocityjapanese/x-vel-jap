@@ -19214,7 +19214,42 @@
       "romaji": "Genzai no, shunkan ni matsu",
       "category": "Inspiration",
       "generated_at": "2026-09-01T22:27:42.304104"
+    },
+    {
+      "english": "Is this table available?",
+      "japanese": "この席, 空いていますか？",
+      "romaji": "Kono seki, aite imasu ka?",
+      "category": "Restaurant Japanese",
+      "generated_at": "2026-09-02T13:56:09.873836"
+    },
+    {
+      "english": "May I have some water?",
+      "japanese": "お水を, お願いできますか？",
+      "romaji": "Omizu o, onegai dekimasu ka?",
+      "category": "Restaurant Japanese",
+      "generated_at": "2026-09-02T13:56:09.873850"
+    },
+    {
+      "english": "I'll have this dish.",
+      "japanese": "これを, 頂きます。",
+      "romaji": "Kore o, itadakimasu.",
+      "category": "Restaurant Japanese",
+      "generated_at": "2026-09-02T13:56:09.873852"
+    },
+    {
+      "english": "Can I get this to go?",
+      "japanese": "お持ち帰り, できますか？",
+      "romaji": "Omochikaeri, dekimasu ka?",
+      "category": "Restaurant Japanese",
+      "generated_at": "2026-09-02T13:56:09.873854"
+    },
+    {
+      "english": "Enjoy your meal!",
+      "japanese": "どうぞ, お楽しみください。",
+      "romaji": "Dōzo, o-tanoshimi kudasai.",
+      "category": "Restaurant Japanese",
+      "generated_at": "2026-09-02T13:56:09.873855"
     }
   ],
-  "last_updated": "2026-09-01T22:27:42.304106"
+  "last_updated": "2026-09-02T13:56:09.873858"
 }
