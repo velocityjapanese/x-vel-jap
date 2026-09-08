@@ -31,12 +31,13 @@ if sys.platform == 'win32':
 # Load environment variables
 load_dotenv()
 
-def _post_tweet_with_fallback(api_key, api_secret, access_token, access_secret, text, media_id):
+def _post_tweet_with_fallback(api_key, api_secret, access_token, access_token_secret=None, access_secret=None, text="", media_id=None, **kwargs):
     """Post tweet using OAuth 1.0a User Context, trying both api.twitter.com and api.x.com."""
     from requests_oauthlib import OAuth1
     import requests
 
-    auth = OAuth1(api_key, api_secret, access_token, access_secret)
+    secret = access_token_secret or access_secret
+    auth = OAuth1(api_key, api_secret, access_token, secret)
     payload = {
         "text": text[:280],
         "media": {"media_ids": [str(media_id)]}
