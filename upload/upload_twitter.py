@@ -31,42 +31,42 @@ if sys.platform == 'win32':
 # Load environment variables
 load_dotenv()
 
-def _post_tweet_with_fallback(api_key, api_secret, access_token, access_token_secret=None, access_secret=None, text="", media_id=None, **kwargs):
-    """Post tweet using OAuth 1.0a User Context, trying both api.twitter.com and api.x.com."""
-    from requests_oauthlib import OAuth1
-    import requests
+# Current X platform host for v2 writes
+X_HOST = "https://api.x.com"
 
-    secret = access_token_secret or access_secret
-    auth = OAuth1(api_key, api_secret, access_token, secret)
-    payload = {
-        "text": text[:280],
-        "media": {"media_ids": [str(media_id)]}
-    }
-    headers = {"Content-Type": "application/json", "User-Agent": "VelocityBot/1.0"}
+# tweepy hardcodes api.twitter.com in BaseClient.request and rejects both
+# `host` and `base_url`. Patch the method so v2 writes hit the current
+# X host (api.x.com), which is required for posting.
+def _x_request(self, method, route, params=None, json=None, user_auth=False):
+    host = X_HOST
+    headers = {"User-Agent": self.user_agent}
+    auth = None
+    if user_auth:
+        auth = OAuth1UserHandler(
+            self.consumer_key, self.consumer_secret,
+            self.access_token, self.access_token_secret
+        )
+        auth = auth.apply_auth()
+    else:
+        headers["Authorization"] = f"Bearer {self.bearer_token}"
 
-    endpoints = [
-        "https://api.twitter.com/2/tweets",
-        "https://api.x.com/2/tweets"
-    ]
+    with self.session.request(
+        method, host + route, params=params, json=json,
+        headers=headers, auth=auth
+    ) as response:
+        if response.status_code == 401:
+            raise tweepy.errors.Unauthorized(response)
+        if response.status_code == 403:
+            raise tweepy.errors.Forbidden(response)
+        if response.status_code == 429:
+            raise tweepy.errors.TooManyRequests(response)
+        if response.status_code >= 500:
+            raise tweepy.errors.TwitterServerError(response)
+        if not 200 <= response.status_code < 300:
+            raise tweepy.errors.HTTPException(response)
+        return response
 
-    last_error = None
-    for url in endpoints:
-        try:
-            print(f"[twitter] Attempting post via {url}...")
-            resp = requests.post(url, json=payload, auth=auth, headers=headers, timeout=60)
-            if resp.status_code in (200, 201):
-                data = resp.json().get("data", {})
-                tweet_id = data.get("id")
-                if tweet_id:
-                    print(f"[twitter] [success] Tweet created successfully via {url}!")
-                    return tweet_id
-            print(f"[twitter] [warn] {url} responded with {resp.status_code}: {resp.text}")
-            last_error = f"{resp.status_code}: {resp.text}"
-        except Exception as e:
-            print(f"[twitter] [warn] Request to {url} exception: {e}")
-            last_error = str(e)
-
-    raise RuntimeError(f"Failed to create tweet on all endpoints: {last_error}")
+tweepy.client.BaseClient.request = _x_request
 
 
 def upload_to_twitter(video_path, caption):
@@ -136,15 +136,12 @@ def upload_to_twitter(video_path, caption):
         print("[twitter] Posting tweet...")
         tweet_text = caption[:280]
 
-        tweet_id = _post_tweet_with_fallback(
-            api_key=api_key,
-            api_secret=api_secret,
-            access_token=access_token,
-            access_token_secret=access_secret,
+        response = client.create_tweet(
             text=tweet_text,
-            media_id=media.media_id
+            media_ids=[media.media_id]
         )
 
+        tweet_id = response.data['id']
         tweet_url = f"https://x.com/i/web/status/{tweet_id}"
 
         print(f"[twitter] [success] Posted to X!")

@@ -1,5 +1,4 @@
 requests
-requests-oauthlib
 edge-tts
 vosk
 google-auth-oauthlib
