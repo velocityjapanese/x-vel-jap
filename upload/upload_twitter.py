@@ -133,8 +133,20 @@ def upload_to_twitter(video_path, caption):
             raise RuntimeError("[twitter] [error] Media processing timed out")
 
         # 5. Post Tweet (text + video)
-        print("[twitter] Posting tweet...")
-        tweet_text = caption[:280]
+        def _truncate_to_twitter_weight(text: str, max_weight: int = 270) -> str:
+            total = 0
+            res = []
+            for c in text:
+                w = 2 if ord(c) >= 0x1100 else 1
+                if total + w > max_weight:
+                    break
+                res.append(c)
+                total += w
+            return "".join(res)
+
+        tweet_text = _truncate_to_twitter_weight(caption, 270)
+        tw_w = sum(2 if ord(c) >= 0x1100 else 1 for c in tweet_text)
+        print(f"[twitter] Posting tweet ({len(tweet_text)} chars, {tw_w} weighted)...")
 
         response = client.create_tweet(
             text=tweet_text,
@@ -153,7 +165,8 @@ def upload_to_twitter(video_path, caption):
         print(f"[twitter] [error] Authentication failed: {e}")
         raise
     except tweepy.errors.Forbidden as e:
-        print(f"[twitter] [error] Permission denied: {e}")
+        resp_text = getattr(getattr(e, 'response', None), 'text', '')
+        print(f"[twitter] [error] Permission denied: {e} | Detail: {resp_text}")
         raise
     except tweepy.errors.TooManyRequests as e:
         print(f"[twitter] [error] Rate limit exceeded: {e}")

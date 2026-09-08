@@ -279,31 +279,31 @@ def generate_caption(phrases, category, lang_field="native", words=None, metadat
     if platform == "twitter":
         lang_name = get_language_name(phrases, lang_field)
         lang_tag = lang_name.lower().replace(" ", "")
-        base = [f"🇯🇵 Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Today's {category} phrases:"]
-        for i, p in enumerate(phrases[:3], 1):
-            en_val = p.get("english", "").strip()
-            jp_val = (p.get("japanese") or p.get(lang_field) or "").strip()
-            rom_val = (p.get("romaji") or p.get("transliteration") or "").strip()
-            if rom_val:
-                base.append(f"{i}. {en_val} = {jp_val} ({rom_val})")
-            else:
-                base.append(f"{i}. {en_val} = {jp_val}")
-        base.extend(["", "Follow for daily lessons! 👇"])
-        base.extend([f"#learn{lang_tag}", f"#{lang_tag}lessons", "#languagelearning", f"#velocity{lang_tag}"])
-        cap = "\n".join(base)
-        if len(cap) > 280:
-            # If exceeding 280 chars with Romaji, try without Romaji
-            compact_base = [f"🇯🇵 Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Today's {category} phrases:"]
-            for i, p in enumerate(phrases[:3], 1):
+
+        def tw_weight(text):
+            return sum(2 if ord(c) >= 0x1100 else 1 for c in text)
+
+        for count in [3, 2, 1]:
+            lines = [f"🇯🇵 Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Today's {category} phrases:"]
+            for i, p in enumerate(phrases[:count], 1):
                 en_val = p.get("english", "").strip()
                 jp_val = (p.get("japanese") or p.get(lang_field) or "").strip()
-                compact_base.append(f"{i}. {en_val} = {jp_val}")
-            compact_base.extend(["", "Follow for daily lessons! 👇"])
-            compact_base.extend([f"#learn{lang_tag}", f"#{lang_tag}lessons", "#languagelearning", f"#velocity{lang_tag}"])
-            cap = "\n".join(compact_base)
-        if len(cap) > 280:
-            cap = cap[:277].rstrip() + "..."
-        return cap
+                lines.append(f"{i}. {en_val} = {jp_val}")
+            lines.extend(["", "Follow for daily lessons! 👇", f"#learn{lang_tag}", f"#velocity{lang_tag}"])
+            cap = "\n".join(lines)
+            if tw_weight(cap) <= 270:
+                return cap
+
+        # Ultimate truncation fallback
+        total = 0
+        res = []
+        for c in cap:
+            w = 2 if ord(c) >= 0x1100 else 1
+            if total + w > 270:
+                break
+            res.append(c)
+            total += w
+        return "".join(res)
     base = [f"Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Category: {category}", "", f"Master {lang_name} one phrase at a time! Today's {category} lesson:", ""]
     for i, p in enumerate(phrases[:5], 1):
         base.append(f"{i}. {p['english']}")
