@@ -14,18 +14,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding="utf-8")
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
+try:
+    from fallback_phrases import FALLBACK_PHRASES as EXTERNAL_FALLBACKS
+except Exception:
+    EXTERNAL_FALLBACKS = {}
 
 load_dotenv()
 
-POLLINATIONS_API_KEY = os.getenv("POLLINATIONS_API_KEY")
-AI_MODEL = os.getenv("AI_MODEL")
-
-if not AI_MODEL:
-    raise ValueError(
-        "AI_MODEL not set! Please add 'AI_MODEL=gemini-fast' to your .env file. "
-        "For GitHub Actions: Add AI_MODEL to repository secrets."
-    )
+POLLINATIONS_API_KEY = os.getenv("POLLINATIONS_API_KEY", "")
+AI_MODEL = os.getenv("AI_MODEL", "gemini-fast")
 
 # Directories
 BASE_DIR = Path(__file__).parent
@@ -270,19 +273,24 @@ IMPORTANT: Create FRESH, UNIQUE phrases that haven't been used before."""
 
                 unique_phrases = []
                 for phrase in phrases:
-                    en = (phrase.get("english") or "").strip()
-                    jp = (phrase.get("japanese") or "").strip()
-                    rom = (phrase.get("romaji") or "").strip()
+                    en = (phrase.get("english") or phrase.get("en") or "").strip()
+                    jp = (phrase.get("japanese") or phrase.get("kanji") or phrase.get("nihongo") or phrase.get("translation") or phrase.get("jp") or "").strip()
+                    rom = (phrase.get("romaji") or phrase.get("pronunciation") or phrase.get("reading") or phrase.get("transliteration") or "").strip()
                     # Skip phrases with no real Japanese (kanji/kana) or romaji,
                     # otherwise the rendered container would be empty.
                     if not en or not jp or not rom:
                         continue
-                    if not any('\u3040' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in jp):
+                    if not any('\u3040' <= c <= '\u309f' or '\u30a0' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in jp):
                         continue
                     if len(en.split()) > 15:
                         continue
+                    clean_phrase = {
+                        "english": en,
+                        "japanese": jp,
+                        "romaji": rom
+                    }
                     if not is_phrase_used(en):
-                        unique_phrases.append(phrase)
+                        unique_phrases.append(clean_phrase)
                     if len(unique_phrases) >= num_phrases:
                         break
 
@@ -566,9 +574,59 @@ def get_fresh_fallback_phrases(category: str, num_phrases: int) -> list:
         ],
     }
 
-    fallbacks = all_fallbacks.get(category, all_fallbacks["Motivation"])
-    fresh_phrases = [p for p in fallbacks if not is_phrase_used(p["english"])]
-    return fresh_phrases[:num_phrases]
+    # Merge with verified EXTERNAL_FALLBACKS from fallback_phrases.py
+    category_fallbacks = []
+    if EXTERNAL_FALLBACKS and category in EXTERNAL_FALLBACKS:
+        category_fallbacks.extend(EXTERNAL_FALLBACKS[category])
+    if category in all_fallbacks:
+        for p in all_fallbacks[category]:
+            if p not in category_fallbacks:
+                category_fallbacks.append(p)
+    if not category_fallbacks:
+        category_fallbacks = (
+            (EXTERNAL_FALLBACKS.get("Motivation") if EXTERNAL_FALLBACKS else None)
+            or all_fallbacks.get("Motivation", [])
+        )
+
+    # Filter for valid phrases that strictly contain Japanese characters
+    valid_pool = []
+    for p in category_fallbacks:
+        en = (p.get("english") or "").strip()
+        jp = (p.get("japanese") or "").strip()
+        rom = (p.get("romaji") or "").strip()
+        if en and jp and rom and any('\u3040' <= c <= '\u309f' or '\u30a0' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in jp):
+            valid_pool.append({"english": en, "japanese": jp, "romaji": rom})
+
+    fresh_phrases = [p for p in valid_pool if not is_phrase_used(p["english"])]
+    if len(fresh_phrases) >= num_phrases:
+        return fresh_phrases[:num_phrases]
+
+    # If fresh phrases are exhausted, cycle through valid pool so we NEVER return empty or fewer phrases
+    result = list(fresh_phrases)
+    for p in valid_pool:
+        if p not in result:
+            result.append(p)
+        if len(result) >= num_phrases:
+            break
+
+    # If still not enough, draw from other verified fallback categories
+    if len(result) < num_phrases:
+        for backup_cat in ["Basic Phrases", "Greetings", "Common Expressions", "Motivation"]:
+            backup_source = (EXTERNAL_FALLBACKS.get(backup_cat) if EXTERNAL_FALLBACKS else None) or all_fallbacks.get(backup_cat, [])
+            for p in backup_source:
+                en = (p.get("english") or "").strip()
+                jp = (p.get("japanese") or "").strip()
+                rom = (p.get("romaji") or "").strip()
+                if en and jp and rom and any('\u3040' <= c <= '\u309f' or '\u30a0' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in jp):
+                    cand = {"english": en, "japanese": jp, "romaji": rom}
+                    if cand not in result:
+                        result.append(cand)
+                if len(result) >= num_phrases:
+                    break
+            if len(result) >= num_phrases:
+                break
+
+    return result[:num_phrases]
 
 
 # ============== AUDIO GENERATION ==============
@@ -862,20 +920,33 @@ def generate_complete_image(phrase_data: dict, category_english: str, output_pat
 
     japanese_font_paths = [
         str(fonts_dir / "yugothb.ttc"),
-        "C:/Windows/Fonts/yugothb.ttc",
-        "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc",
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
         "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
+        "/usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf",
+        "/usr/share/fonts/truetype/fonts-japanese-gothic.ttf",
+        "C:/Windows/Fonts/yugothb.ttc",
         "C:/Windows/Fonts/msgothic.ttc",
         "C:/Windows/Fonts/msmincho.ttc",
+        "C:/Windows/Fonts/meiryo.ttc",
     ]
 
     def load_font(font_paths, size):
         for font_path in font_paths:
             try:
+                if Path(font_path).exists():
+                    return ImageFont.truetype(font_path, size)
+            except (IOError, OSError):
+                continue
+        for font_path in font_paths:
+            try:
                 return ImageFont.truetype(font_path, size)
             except (IOError, OSError):
                 continue
+        print(f"[warning] Font load fallback: using default font for size {size}")
         return ImageFont.load_default()
 
     SIZE_CATEGORY = 64
@@ -896,12 +967,30 @@ def generate_complete_image(phrase_data: dict, category_english: str, output_pat
     font_branding = load_font(english_font_paths, SIZE_BRANDING)
     font_progress = load_font(english_font_paths, SIZE_PROGRESS)
 
-    english = phrase_data.get("english", "")
-    japanese = phrase_data.get("japanese", "")
-    romaji = phrase_data.get("romaji", "")
+    english = (phrase_data.get("english") or "").strip()
+    japanese = (phrase_data.get("japanese") or "").strip()
+    romaji = (phrase_data.get("romaji") or "").strip()
+
+    # Emergency check: if Japanese text is missing or lacks CJK characters,
+    # supply a verified fallback to guarantee the container is NEVER empty.
+    has_cjk = any('\u3040' <= c <= '\u309f' or '\u30a0' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in japanese)
+    if not japanese or not has_cjk:
+        print(f"[warning] Phrase missing Japanese text: {phrase_data}. Using emergency fallback.")
+        emergency_list = get_fresh_fallback_phrases(category_english, 1)
+        if emergency_list:
+            japanese = emergency_list[0]["japanese"]
+            if not romaji:
+                romaji = emergency_list[0]["romaji"]
+        else:
+            japanese = "こんにちは、はじめまして。"
+            if not romaji:
+                romaji = "Konnichiwa, hajimemashite."
+
     romaji_text = f"[{romaji}]" if romaji else ""
 
     def wrap_text(text, font, max_width):
+        if not text:
+            return []
         lines = []
         is_jp = any('\u3040' <= c <= '\u309f' or '\u30a0' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9fff' for c in text)
         if is_jp:
@@ -944,6 +1033,8 @@ def generate_complete_image(phrase_data: dict, category_english: str, output_pat
                                 current_line = ch
             if current_line:
                 lines.append(current_line)
+            if not lines and text:
+                lines = [text]
         else:
             words = text.split()
             current_line = []
@@ -959,14 +1050,19 @@ def generate_complete_image(phrase_data: dict, category_english: str, output_pat
                     current_line = [word]
             if current_line:
                 lines.append(' '.join(current_line))
+            if not lines and text:
+                lines = [text]
         return lines
 
     def pick_native_font(text, max_w):
         for font, name in [(font_native_l, 'L'), (font_native_m, 'M'), (font_native_s, 'S')]:
             lines = wrap_text(text, font, max_w)
-            if len(lines) <= 2:
+            if 0 < len(lines) <= 2:
                 return font, lines
-        return font_native_s, wrap_text(text, font_native_s, max_w)
+        lines = wrap_text(text, font_native_s, max_w)
+        if not lines and text:
+            lines = [text]
+        return font_native_s, lines
 
     def measure_text_width(text, font):
         b = draw.textbbox((0, 0), text, font=font)

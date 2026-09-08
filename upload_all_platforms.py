@@ -66,14 +66,18 @@ def get_latest_reel():
     words = meta.get("words", [])
     lang_field = None
     if phrases:
-        for key in phrases[0]:
-            if key not in ("english", "transliteration", "category"):
-                lang_field = key
-                break
-    return {"video_path": str(latest), "metadata": meta, "category": meta.get("category_english", meta.get("channel", "Learning")), "phrases": phrases, "words": words, "lang_field": lang_field or "native"}
+        if "japanese" in phrases[0]:
+            lang_field = "japanese"
+        else:
+            for key in phrases[0]:
+                if key not in ("english", "transliteration", "category", "romaji", "pinyin", "romanization", "pronunciation"):
+                    lang_field = key
+                    break
+    return {"video_path": str(latest), "metadata": meta, "category": meta.get("category_english", meta.get("channel", "Learning")), "phrases": phrases, "words": words, "lang_field": lang_field or "japanese"}
 
 
 LANGUAGE_MAP = {
+    "jap": "Japanese", "japanese": "Japanese", "jp": "Japanese",
     "slovn": "Slovenian", "slovenian": "Slovenian",
     "heb": "Hebrew", "hebrew": "Hebrew",
     "dut": "Dutch", "dutch": "Dutch",
@@ -277,10 +281,26 @@ def generate_caption(phrases, category, lang_field="native", words=None, metadat
         lang_tag = lang_name.lower().replace(" ", "")
         base = [f"🇯🇵 Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Today's {category} phrases:"]
         for i, p in enumerate(phrases[:3], 1):
-            base.append(f"{i}. {p['english']} = {p.get(lang_field, '')}")
+            en_val = p.get("english", "").strip()
+            jp_val = (p.get("japanese") or p.get(lang_field) or "").strip()
+            rom_val = (p.get("romaji") or p.get("transliteration") or "").strip()
+            if rom_val:
+                base.append(f"{i}. {en_val} = {jp_val} ({rom_val})")
+            else:
+                base.append(f"{i}. {en_val} = {jp_val}")
         base.extend(["", "Follow for daily lessons! 👇"])
         base.extend([f"#learn{lang_tag}", f"#{lang_tag}lessons", "#languagelearning", f"#velocity{lang_tag}"])
         cap = "\n".join(base)
+        if len(cap) > 280:
+            # If exceeding 280 chars with Romaji, try without Romaji
+            compact_base = [f"🇯🇵 Learn {lang_name} with VELOCITY {lang_name.upper()}!", "", f"Today's {category} phrases:"]
+            for i, p in enumerate(phrases[:3], 1):
+                en_val = p.get("english", "").strip()
+                jp_val = (p.get("japanese") or p.get(lang_field) or "").strip()
+                compact_base.append(f"{i}. {en_val} = {jp_val}")
+            compact_base.extend(["", "Follow for daily lessons! 👇"])
+            compact_base.extend([f"#learn{lang_tag}", f"#{lang_tag}lessons", "#languagelearning", f"#velocity{lang_tag}"])
+            cap = "\n".join(compact_base)
         if len(cap) > 280:
             cap = cap[:277].rstrip() + "..."
         return cap
