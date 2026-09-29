@@ -19879,7 +19879,42 @@
       "romaji": "Shiawase wa mokutekichi ja nakute, michinori.",
       "category": "Happiness",
       "generated_at": "2026-09-23T14:30:00.846213"
+    },
+    {
+      "english": "Thank you, I’m lucky to have you.",
+      "japanese": "ありがとう、あなたがいてくれて幸せです。",
+      "romaji": "arigatou, anata ga ite kurete shiawase desu.",
+      "category": "Gratitude",
+      "generated_at": "2026-09-29T00:16:28.123725"
+    },
+    {
+      "english": "I appreciate it, your time helped me.",
+      "japanese": "ありがとうございます、あなたの時間が助かりました。",
+      "romaji": "arigatou gozaimasu, anata no jikan ga tasukarimashita.",
+      "category": "Gratitude",
+      "generated_at": "2026-09-29T00:16:28.123737"
+    },
+    {
+      "english": "Thank you, your words warmed my heart.",
+      "japanese": "ありがとう、あなたの言葉が嬉しかったです。",
+      "romaji": "arigatou, anata no kotoba ga ureshikatta desu.",
+      "category": "Gratitude",
+      "generated_at": "2026-09-29T00:16:28.123738"
+    },
+    {
+      "english": "Thanks so much, I’m truly grateful.",
+      "japanese": "本当にありがとう、心から感謝です。",
+      "romaji": "hontou ni arigatou, kokoro kara kansha desu.",
+      "category": "Gratitude",
+      "generated_at": "2026-09-29T00:16:28.123739"
+    },
+    {
+      "english": "Thank you, I feel supported by you.",
+      "japanese": "ありがとう、あなたに支えられています。",
+      "romaji": "arigatou, anata ni sasaerarete imasu.",
+      "category": "Gratitude",
+      "generated_at": "2026-09-29T00:16:28.123740"
     }
   ],
-  "last_updated": "2026-09-23T14:30:00.846215"
+  "last_updated": "2026-09-29T00:16:28.123742"
 }
