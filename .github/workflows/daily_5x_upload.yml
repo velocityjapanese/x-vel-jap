@@ -1,9 +1,8 @@
-name: Velocity Japanese - Daily 5x Upload (X only)
+name: Velocity Japanese - Daily Upload (X only)
 
 on:
   schedule:
-    - cron: '0 10 * * *'   # 5:00 AM EST
-    - cron: '0 20 * * *'   # 3:00 PM EST
+    - cron: '0 10 * * *'
   workflow_dispatch:
 
 permissions:
