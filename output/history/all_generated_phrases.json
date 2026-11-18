@@ -19914,7 +19914,42 @@
       "romaji": "arigatou, anata ni sasaerarete imasu.",
       "category": "Gratitude",
       "generated_at": "2026-09-29T00:16:28.123740"
+    },
+    {
+      "english": "I love learning new languages.",
+      "japanese": "新しい言語を学ぶのが大好きです。",
+      "transliteration": "Atarashii gengo o manabu no ga daisuki desu.",
+      "category": "Time",
+      "generated_at": "2026-11-18T08:54:30.777846"
+    },
+    {
+      "english": "Never give up on your dreams.",
+      "japanese": "夢を決してあきらめないでください。",
+      "transliteration": "Yume o kesshite akiramenaide kudasai.",
+      "category": "Time",
+      "generated_at": "2026-11-18T08:54:30.777856"
+    },
+    {
+      "english": "Every day is a fresh start.",
+      "japanese": "毎日が新しい始まりです。",
+      "transliteration": "Mainichi ga atarashii hajimari desu.",
+      "category": "Time",
+      "generated_at": "2026-11-18T08:54:30.777858"
+    },
+    {
+      "english": "Believe in yourself always.",
+      "japanese": "いつも自分を信じてください。",
+      "transliteration": "Itsumo jibun o shinjite kudasai.",
+      "category": "Time",
+      "generated_at": "2026-11-18T08:54:30.777860"
+    },
+    {
+      "english": "Small steps lead to big changes.",
+      "japanese": "小さな一歩が大きな変化につながります。",
+      "transliteration": "Chīsana ippo ga ōkina henka ni tsunagarimasu.",
+      "category": "Time",
+      "generated_at": "2026-11-18T08:54:30.777861"
     }
   ],
-  "last_updated": "2026-09-29T00:16:28.123742"
+  "last_updated": "2026-11-18T08:54:30.777863"
 }
