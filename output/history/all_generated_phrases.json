@@ -19949,7 +19949,42 @@
       "transliteration": "Chīsana ippo ga ōkina henka ni tsunagarimasu.",
       "category": "Time",
       "generated_at": "2026-11-18T08:54:30.777861"
+    },
+    {
+      "english": "You are stronger than you think.",
+      "japanese": "あなたは思っているより強いです。",
+      "transliteration": "Anata wa omotte iru yori tsuyoi desu.",
+      "category": "Body Parts",
+      "generated_at": "2026-11-18T18:29:05.781843"
+    },
+    {
+      "english": "Happiness is a choice, choose it.",
+      "japanese": "幸せは選択です、選んでください。",
+      "transliteration": "Shiawase wa sentaku desu, erande kudasai.",
+      "category": "Body Parts",
+      "generated_at": "2026-11-18T18:29:05.781850"
+    },
+    {
+      "english": "What time is it please.",
+      "japanese": "すみません、今何時ですか。",
+      "transliteration": "Sumimasen, ima nanji desu ka.",
+      "category": "Body Parts",
+      "generated_at": "2026-11-18T18:29:05.781851"
+    },
+    {
+      "english": "Where is the train station.",
+      "japanese": "駅はどこですか。",
+      "transliteration": "Eki wa doko desu ka.",
+      "category": "Body Parts",
+      "generated_at": "2026-11-18T18:29:05.781852"
+    },
+    {
+      "english": "How much does this cost.",
+      "japanese": "これはいくらですか。",
+      "transliteration": "Kore wa ikura desu ka.",
+      "category": "Body Parts",
+      "generated_at": "2026-11-18T18:29:05.781853"
     }
   ],
-  "last_updated": "2026-11-18T08:54:30.777863"
+  "last_updated": "2026-11-18T18:29:05.781855"
 }
