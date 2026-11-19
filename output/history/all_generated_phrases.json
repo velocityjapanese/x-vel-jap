@@ -19984,7 +19984,42 @@
       "transliteration": "Kore wa ikura desu ka.",
       "category": "Body Parts",
       "generated_at": "2026-11-18T18:29:05.781853"
+    },
+    {
+      "english": "Can you help me please.",
+      "japanese": "手伝ってもらえますか。",
+      "transliteration": "Tetsudatte moraemasu ka.",
+      "category": "Technology",
+      "generated_at": "2026-11-19T18:43:34.240532"
+    },
+    {
+      "english": "I would like a coffee please.",
+      "japanese": "コーヒーを一つお願いします。",
+      "transliteration": "Kōhī o hitotsu onegaishimasu.",
+      "category": "Technology",
+      "generated_at": "2026-11-19T18:43:34.240547"
+    },
+    {
+      "english": "The food is delicious today.",
+      "japanese": "今日の料理はとてもおいしいです。",
+      "transliteration": "Kyō no ryōri wa totemo oishii desu.",
+      "category": "Technology",
+      "generated_at": "2026-11-19T18:43:34.240548"
+    },
+    {
+      "english": "Have a wonderful weekend.",
+      "japanese": "素敵な週末をお過ごしください。",
+      "transliteration": "Suteki na shūmatsu o osugoshi kudasai.",
+      "category": "Technology",
+      "generated_at": "2026-11-19T18:43:34.240550"
+    },
+    {
+      "english": "Take care of yourself.",
+      "japanese": "お体に気をつけてください。",
+      "transliteration": "Okarada ni ki o tsukete kudasai.",
+      "category": "Technology",
+      "generated_at": "2026-11-19T18:43:34.240551"
     }
   ],
-  "last_updated": "2026-11-18T18:29:05.781855"
+  "last_updated": "2026-11-19T18:43:34.240553"
 }
