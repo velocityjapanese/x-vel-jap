@@ -20054,7 +20054,21 @@
       "transliteration": "Mainichi tsuzukete renshū shimashō.",
       "category": "Feelings",
       "generated_at": "2026-11-20T18:04:36.608231"
+    },
+    {
+      "english": "You can achieve anything you want.",
+      "japanese": "望めば何でも達成できます。",
+      "transliteration": "Nozomeba nan demo tassei dekimasu.",
+      "category": "Relationships",
+      "generated_at": "2026-11-21T17:00:26.595599"
+    },
+    {
+      "english": "Rest when you are tired.",
+      "japanese": "疲れたら休んでください。",
+      "transliteration": "Tsukaretara yasunde kudasai.",
+      "category": "Relationships",
+      "generated_at": "2026-11-21T17:00:26.595609"
     }
   ],
-  "last_updated": "2026-11-20T18:04:36.608233"
+  "last_updated": "2026-11-21T17:00:26.595612"
 }
