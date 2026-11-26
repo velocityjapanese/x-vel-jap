@@ -3,3 +3,6 @@ accounts.json
 tokens/
 .env
 *.log
+scene_storybook/preview.html
+__pycache__/
+*.pyc
