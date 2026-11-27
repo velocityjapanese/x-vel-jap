@@ -20089,7 +20089,28 @@
       "transliteration": "Kasa o wasuremashita.",
       "category": "Health",
       "generated_at": "2026-11-27T11:50:48.619832"
+    },
+    {
+      "english": "The train is late today.",
+      "japanese": "今日は電車が遅れています。",
+      "transliteration": "Kyō wa densha ga okurete imasu.",
+      "category": "Finance",
+      "generated_at": "2026-11-27T19:24:32.218657"
+    },
+    {
+      "english": "This street is very quiet.",
+      "japanese": "この通りはとても静かです。",
+      "transliteration": "Kono tōri wa totemo shizuka desu.",
+      "category": "Finance",
+      "generated_at": "2026-11-27T19:24:32.218665"
+    },
+    {
+      "english": "Let's take a short break.",
+      "japanese": "少し休みましょう。",
+      "transliteration": "Sukoshi yasumimashō.",
+      "category": "Finance",
+      "generated_at": "2026-11-27T19:24:32.218666"
     }
   ],
-  "last_updated": "2026-11-27T11:50:48.619834"
+  "last_updated": "2026-11-27T19:24:32.218668"
 }
