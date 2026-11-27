@@ -20068,7 +20068,28 @@
       "transliteration": "Tsukaretara yasunde kudasai.",
       "category": "Relationships",
       "generated_at": "2026-11-21T17:00:26.595609"
+    },
+    {
+      "english": "I am a little tired today.",
+      "japanese": "今日は少し疲れています。",
+      "transliteration": "Kyō wa sukoshi tsukarete imasu.",
+      "category": "Health",
+      "generated_at": "2026-11-27T11:50:48.619823"
+    },
+    {
+      "english": "Please speak a little slower.",
+      "japanese": "もう少しゆっくり話してください。",
+      "transliteration": "Mō sukoshi yukkuri hanashite kudasai.",
+      "category": "Health",
+      "generated_at": "2026-11-27T11:50:48.619830"
+    },
+    {
+      "english": "I forgot my umbrella.",
+      "japanese": "傘を忘れました。",
+      "transliteration": "Kasa o wasuremashita.",
+      "category": "Health",
+      "generated_at": "2026-11-27T11:50:48.619832"
     }
   ],
-  "last_updated": "2026-11-21T17:00:26.595612"
+  "last_updated": "2026-11-27T11:50:48.619834"
 }
