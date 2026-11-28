@@ -20110,7 +20110,28 @@
       "transliteration": "Sukoshi yasumimashō.",
       "category": "Finance",
       "generated_at": "2026-11-27T19:24:32.218666"
+    },
+    {
+      "english": "I like this song a lot.",
+      "japanese": "この歌がとても好きです。",
+      "transliteration": "Kono uta ga totemo suki desu.",
+      "category": "Shopping",
+      "generated_at": "2026-11-28T03:49:14.625795"
+    },
+    {
+      "english": "Please turn down the volume.",
+      "japanese": "音量を下げてください。",
+      "transliteration": "Onryō o sagete kudasai.",
+      "category": "Shopping",
+      "generated_at": "2026-11-28T03:49:14.625804"
+    },
+    {
+      "english": "I will call you tomorrow.",
+      "japanese": "明日電話します。",
+      "transliteration": "Ashita denwa shimasu.",
+      "category": "Shopping",
+      "generated_at": "2026-11-28T03:49:14.625805"
     }
   ],
-  "last_updated": "2026-11-27T19:24:32.218668"
+  "last_updated": "2026-11-28T03:49:14.625807"
 }
