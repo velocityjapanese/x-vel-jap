@@ -20131,7 +20131,28 @@
       "transliteration": "Ashita denwa shimasu.",
       "category": "Shopping",
       "generated_at": "2026-11-28T03:49:14.625805"
+    },
+    {
+      "english": "It might rain this afternoon.",
+      "japanese": "午後は雨が降るかもしれません。",
+      "transliteration": "Gogo wa ame ga furu kamoshiremasen.",
+      "category": "Joy",
+      "generated_at": "2026-11-28T11:26:07.128715"
+    },
+    {
+      "english": "The food here is delicious.",
+      "japanese": "ここの料理はおいしいです。",
+      "transliteration": "Koko no ryōri wa oishii desu.",
+      "category": "Joy",
+      "generated_at": "2026-11-28T11:26:07.128721"
+    },
+    {
+      "english": "I need to buy a ticket.",
+      "japanese": "切符を買わなければなりません。",
+      "transliteration": "Kippu o kawanakereba narimasen.",
+      "category": "Joy",
+      "generated_at": "2026-11-28T11:26:07.128723"
     }
   ],
-  "last_updated": "2026-11-28T03:49:14.625807"
+  "last_updated": "2026-11-28T11:26:07.128725"
 }
